@@ -84,9 +84,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@3.222.205.65 << 'EOF'
-          docker pull ghcr.io/logaka/todoapp:latest
-          
-          docker rm -f todoapp:container ||true
-          
-          docker run -d --name todoapp-container -p 80:80 ghcr.io/logaka/todoapp:latest
+          ssh -o StrictHostKeyChecking=no ubuntu@3.222.205.65 "docker pull ghcr.io/logaka/todoapp:latest docker rm -f todoapp:container ||true docker run -d --name todoapp-container -p 80:80 ghcr.io/logaka/todoapp:latest"
