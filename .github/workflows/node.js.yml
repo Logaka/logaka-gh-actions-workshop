@@ -90,4 +90,3 @@ jobs:
           docker rm -f todoapp:container ||true
           
           docker run -d --name todoapp-container -p 80:80 ghcr.io/logaka/todoapp:latest
-        EOF
