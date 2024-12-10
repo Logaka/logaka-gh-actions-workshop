@@ -60,6 +60,7 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
             type=sha,event=branch,prefix=,suffix=,format=short
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
@@ -68,6 +69,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+
   server-connection:
     needs:
       - package-and-publish
@@ -80,13 +83,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@3.222.205.65 << 'EOF'
-          # Pull the latest Docker image from GHCR
-          docker pull ghcr.io/logaka/todoapp:latest
-          
-          # Remove any existing container with the same name
-          docker rm -f todoapp-container || true
-          
-          # Run the new container
-          docker run -d --name todoapp-container -p 80:80 ghcr.io/logaka/todoapp:latest
-          EOF
+          ssh -o StrictHostKeyChecking=no ubuntu@3.222.205.65 "ghcr.io/${{ github.repository }}"
