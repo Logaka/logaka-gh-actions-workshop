@@ -55,7 +55,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.action }}
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=ref,event=tag
             type=ref,event=pr
@@ -78,9 +78,9 @@ jobs:
 
     steps:
       - name: Pull image
-        run: docker pull ghcr.io/${{ github.action }}:latest
+        run: docker pull ghcr.io/${{ github.repository }}:latest
 
       - name: Delete old container
-        run: docker rm -f ghcr.io/${{ github.action }}:latest
+        run: docker rm -f ghcr.io/${{ github.repository }}:latest
       - name: Run docker container
-        run: docker run -d -p 3000:80 --name container docker pull ghcr.io/${{ github.action }}:latest
+        run: docker run -d -p 3000:80 --name container docker pull ghcr.io/${{ github.repository }}:latest
