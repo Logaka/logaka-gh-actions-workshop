@@ -78,9 +78,9 @@ jobs:
 
     steps:
       - name: Pull image
-        run: docker pull ghcr.io/${{ github.repository }}:latest
+        run: docker pull ghcr.io/${{ github.action }}:latest
 
       - name: Delete old container
-        run: docker rm -f ghcr.io/${{ github.repository }}:latest
+        run: docker rm -f ghcr.io/${{ github.action }}:latest
       - name: Run docker container
-        run: docker run -d -p 3000:80 --name container docker pull ghcr.io/${{ github.repository }}:latest
+        run: docker run -d -p 3000:80 --name container docker pull ghcr.io/${{ github.action }}:latest
