@@ -71,16 +71,16 @@ jobs:
           cache-to: type=gha,mode=max
 
 
-  server-connection:
+  deploy:
     needs:
       - package-and-publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+    runs-on: aws-ec2
 
-      - name: Deploy to EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@3.222.205.65 "ghcr.io/${{ github.repository }}"
+    steps:
+      - name: Pull image
+        run: docker pull ghcr.io/${{ github.repository }}:latest
+
+      - name: Delete old container
+        run: docker rm -f ghcr.io/${{ github.repository }}:latest
+      - name: Run docker container
+        run: docker run -d -p 3000:80 --name container docker pull ghcr.io/${{ github.repository }}:latest
